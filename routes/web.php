@@ -18,3 +18,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/create-event', 'EventController@index')->name('createEvent');
+Route::post('/create-event', 'EventController@create')->name('postEvent');
+Route::get('/created/{event}', 'EventController@created')->name('eventCreated');
+
+Route::get('/events', 'EventController@viewAll')->name('allEvents');
+Route::get('events/{event}', 'EventController@view')->name('viewEvent');
+Route::get('events/{event}/edit', 'EventController@edit')->name('editEvent');
+Route::post('events/{event}/edit', 'EventController@update')->name('updateEvent');
+
+Route::get('user/{user}', 'UserController@show')->name('showUser');
+Route::get('user/{user}/events', 'UserController@myEvents')->name('viewMyEvents');
+

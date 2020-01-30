@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Auth;
 
 class User extends Authenticatable
 {
@@ -36,4 +37,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function events()
+    {
+        return $this->hasMany('App\Event');
+    }
+
+
+    /**
+     * In the future this can be expanded to include admins
+     * 
+     */
+    public function canEditEvent(Event $event)
+    {
+        if (Auth::id() == $event->user_id)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }

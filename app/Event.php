@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Event extends Model
 {
@@ -12,7 +13,41 @@ class Event extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'date_start', 'date_end',
+        'name', 'user_id', 'description', 'date_start', 'date_end',
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+
+    public function pastEvents()
+    {
+        return Event::where('date_start', '<', Carbon::now());
+    }
+
+
+    public function futureEvents()
+    {
+        return Event::where('date_start', '>', Carbon::now());
+    }
+
+
+    public function ongoingEvents()
+    {
+        $now = Carbon::now();
+
+        return Event::where('date_start', '<', $now)
+            ->where('date_end', '>', $now);
+    }
+
+
+    public function scopeCreatedByUser($query, User $user)
+    {
+        return $query->where('user_id', $user->id);
+    }
+
 
 }
