@@ -1,5 +1,5 @@
 <div>
-    <h2>{{ $event->name }}</h2>
+    <h2><a href="{{route('viewEvent', $event)}}">{{ $event->name }}</a></h2>
     <p>{{ $event->description }}</p>
     <p>X People Attending</p>
 </div>

@@ -33,7 +33,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        @if(Auth::id())
+                            <a href="{{ route('allEvents') }}"><li>All Events</li></a>
+                            <a href="{{ route('viewMyEvents', ['user' => Auth::user()]) }}"><li>My Events</li></a>
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -49,7 +52,9 @@
                                 </li>
                             @endif
                         @else
+                        <li class="nav-item dropdown">
                             <li class="nav-item dropdown">
+                                
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
@@ -65,6 +70,7 @@
                                         @csrf
                                     </form>
                                 </div>
+                                
                             </li>
                         @endguest
                     </ul>

@@ -29,11 +29,16 @@ class EventController extends Controller
         return view('events/create');
     }
 
-    public function view()
+    public function view(Event $event)
+    {
+        return view('events/view', ['event' => $event]);
+    }
+
+    public function viewAll()
     {
         $events = Event::all();
 
-        return view('events/view', ['events' => $events]);
+        return view('events/viewAll', ['events' => $events]);
     }
 
     public function create(Request $request)
@@ -60,4 +65,37 @@ class EventController extends Controller
     {
         return view('events/created', ['event' => $event]);
     }
+
+
+
+    public function edit(Event $event)
+    {
+        return view('events/edit', ['event' => $event]);
+    
+    }
+
+
+    public function update(Request $request, Event $event)
+    {
+        if (!Auth::user()->canEditEvent($event)) {
+            dd('403');
+        }
+
+        $data = $request->all();
+
+        $dateStart = $data['dateStart'];
+        $timeStart = $data['timeStart'];
+
+        $event->name = $data['eventName'];
+        $event->description = $data['description'];
+        $event->date_start = $data['dateStart'];
+        $event->date_end = $data['dateEnd'];
+        $event->save();
+ 
+
+        return redirect()->route('viewEvent', ['event' => $event, 'message' => 'Event updated.']);
+    }
+
+    
+
 }

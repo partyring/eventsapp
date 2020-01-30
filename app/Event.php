@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Event extends Model
 {
@@ -14,6 +15,12 @@ class Event extends Model
     protected $fillable = [
         'name', 'user_id', 'description', 'date_start', 'date_end',
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 
 
     public function pastEvents()
@@ -37,15 +44,10 @@ class Event extends Model
     }
 
 
-    public function eventsCreatedByMe()
+    public function scopeCreatedByUser($query, User $user)
     {
-        return Event::where('user_id', Auth::id());
+        return $query->where('user_id', $user->id);
     }
 
-
-    public function eventsIAmAttending()
-    {
-        //
-    }
 
 }
