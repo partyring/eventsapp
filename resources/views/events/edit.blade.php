@@ -94,6 +94,33 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="tags" class="col-md-4 col-form-label text-md-right">{{ __('Tags') }}</label>
+                            
+                            <div class="col-md-6">
+                                @foreach($tags as $tag)
+                                
+                                    <div class="form-check">
+                                        <input 
+                                            class="form-check-input" 
+                                            type="checkbox" 
+                                            name="tags[]" 
+                                            value="{{$tag->id}}" 
+                                            id="tags"
+                                            @if(in_array($tag->id, $tagIDs, true))
+                                                checked
+                                            @endif
+                                        >
+                                        <label class="form-check-label" for="tags">
+                                        #{{ $tag->name }}
+                                        </label>
+                                    </div>
+                                    
+                                @endforeach
+                            
+                            </div>
+                        </div>
+
                         <button type="submit">Update</button>
 
                     </form>

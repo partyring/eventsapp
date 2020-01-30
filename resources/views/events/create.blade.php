@@ -95,18 +95,20 @@
                         </div>
 
                         <div class="form-group row">
-                            <small>You can use tags to make your event more findable by others. Please check as many tags as relevant.</small>
                             <label for="tags" class="col-md-4 col-form-label text-md-right">{{ __('Tags') }}</label>
                             
-                            @foreach($tags as $tag)
                             <div class="col-md-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="tags[]" value="{{$tag->id}}" id="tags">
-                                    <label class="form-check-label" for="tags">
-                                      #{{ $tag->name }}
-                                    </label>
-                                  </div>
-                            @endforeach
+                                @foreach($tags as $tag)
+                                
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="tags[]" value="{{$tag->id}}" id="tags">
+                                        <label class="form-check-label" for="tags">
+                                        #{{ $tag->name }}
+                                        </label>
+                                    </div>
+                                    
+                                @endforeach
+                            
                             </div>
                         </div>
 
