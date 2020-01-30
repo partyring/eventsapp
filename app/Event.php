@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\User;
 use App\Tag;
 use App\EventTag;
+use App\InvitedUser;
 
 class Event extends Model
 {
@@ -28,6 +29,12 @@ class Event extends Model
     public function tags()
     {
         return $this->belongsToMany('App\Tag')->using('App\EventTag')->orderBy('name');
+    }
+
+
+    public function invitedUsers()
+    {
+        return $this->belongsToMany('App\User', 'invited_users');
     }
 
 
@@ -58,9 +65,50 @@ class Event extends Model
     }
 
 
-    public function scopeCreatedByUser($query, User $user)
+    public function scopeCreatedBy($query, User $user)
     {
         return $query->where('user_id', $user->id);
+    }
+
+
+    public function scopeViewableBy($query, User $user) 
+    {
+        // We only want events that are either
+        // 1. Created by the Auth user
+        // 2. The Auth user is invited to
+        // 3. The event is public
+
+        $id = $user->id;
+
+        return $query->with('invitedUsers')
+            ->where('user_id', $id)
+            ->orWhere('private', 0)
+            ->orWhereHas('invitedUsers', function ($q) use ($id) {
+                $q->where('user_id', $id);
+            });
+
+    }
+
+
+    public function canBeViewedBy(User $user)
+    {
+        if ($this->private == 0) {
+            return true;
+        }
+
+
+        if ($this->user_id == $user->id) {
+            return true;
+        }
+
+        $invitedUsers = $this->invitedUsers()->pluck('user_id')->toArray();
+
+        if (in_array($user->id, $invitedUsers)) {
+            return true;
+        }
+
+
+        return false;
     }
 
 
