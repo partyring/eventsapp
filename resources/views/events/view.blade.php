@@ -3,9 +3,13 @@
 @section('content')
 <div class="container">
     <h1>{{ $event->name }}</h1>
-    <p>Hosted by {{ $event->user->username }}</p>
+    <p>Hosted by {{ $event->user->username }}.</p>
     <p>From {{ $event->date_start }} to {{ $event->date_end }}</p>
     <p>{{ $event->description }}</p>
+    
+    @foreach($event->tags as $tag)
+        <span class="tag">#{{ $tag->name }}</span>
+    @endforeach
 </div>
 
 <div class="container">
