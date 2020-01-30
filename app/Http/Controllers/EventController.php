@@ -86,7 +86,7 @@ class EventController extends Controller
     public function edit(Event $event)
     {
         $tags = Tag::all();
-        $tagIDs = $event->tags()->pluck('tag_id')->toArray();
+        $tagIDs = $event->tagIDs()->toArray();
 
         return view('events/edit', ['event' => $event, 'tags' => $tags, 'tagIDs' => $tagIDs]);
     
@@ -104,23 +104,24 @@ class EventController extends Controller
         $dateStart = $data['dateStart'];
         $timeStart = $data['timeStart'];
 
+
         $event->name = $data['eventName'];
         $event->description = $data['description'];
         $event->date_start = $data['dateStart'];
         $event->date_end = $data['dateEnd'];
         $event->save();
 
-        // TODO :: check if any tags have been deleted
-        if (isSet($data['tags'])) {
-            $tags = $data['tags'];
+        // Remove tags that have been untagged
+        // Tag new tags to event
 
-            foreach ($tags as $tag) {
-                $eventsTags = EventTag::create([
-                    'event_id' => $event->id,
-                    'tag_id' => $tag
-                ]);
-            }
-        }
+        if (!isSet($data['tags'])) {
+            $newTags = [];
+        } else {
+            $newTags = $data['tags'];
+        }          
+
+        $event->tags()->sync($newTags);
+        
  
 
         return redirect()->route('viewEvent', ['event' => $event, 'message' => 'Event updated.']);

@@ -27,7 +27,13 @@ class Event extends Model
 
     public function tags()
     {
-        return $this->belongsToMany('App\Tag')->using('App\EventTag');
+        return $this->belongsToMany('App\Tag')->using('App\EventTag')->orderBy('name');
+    }
+
+
+    public function tagIDs()
+    {
+        return $this->tags()->pluck('tag_id');
     }
 
 
