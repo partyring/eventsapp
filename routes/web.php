@@ -18,3 +18,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/create-event', 'EventController@index')->name('createEvent');
+Route::post('/create-event', 'EventController@create')->name('postEvent');
+Route::get('/created/{event}', 'EventController@created')->name('eventCreated');
+
+Route::get('/events', 'EventController@view')->name('allEvents');
+Route::get('events/{event}', 'EventController@show')->name('showEvent');

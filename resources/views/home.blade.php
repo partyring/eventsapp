@@ -16,7 +16,7 @@
 
                     You are logged in!
 
-                    <button href="{{ route('') }}" type="button" >Create Event</button>
+                    <button href="{{ route('createEvent') }}" type="button" >Create Event</button>
                 </div>
             </div>
         </div>

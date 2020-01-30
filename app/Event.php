@@ -12,7 +12,40 @@ class Event extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'date_start', 'date_end',
+        'name', 'user_id', 'description', 'date_start', 'date_end',
     ];
+
+
+    public function pastEvents()
+    {
+        return Event::where('date_start', '<', Carbon::now());
+    }
+
+
+    public function futureEvents()
+    {
+        return Event::where('date_start', '>', Carbon::now());
+    }
+
+
+    public function ongoingEvents()
+    {
+        $now = Carbon::now();
+
+        return Event::where('date_start', '<', $now)
+            ->where('date_end', '>', $now);
+    }
+
+
+    public function eventsCreatedByMe()
+    {
+        return Event::where('user_id', Auth::id());
+    }
+
+
+    public function eventsIAmAttending()
+    {
+        //
+    }
 
 }
