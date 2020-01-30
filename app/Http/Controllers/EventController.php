@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Auth;
 use Carbon\Carbon;
 use App\Event;
+use App\Tag;
+use App\EventTag;
 
 class EventController extends Controller
 {
@@ -26,7 +29,8 @@ class EventController extends Controller
 
     public function index() 
     {
-        return view('events/create');
+        $tags = Tag::orderBy('name')->get();
+        return view('events/create', ['tags' => $tags]);
     }
 
     public function view(Event $event)
@@ -43,7 +47,7 @@ class EventController extends Controller
 
     public function create(Request $request)
     {
-        $data = $request->all();
+        $data = $request->all();   
 
         $dateStart = $data['dateStart'];
         $timeStart = $data['timeStart'];
@@ -55,6 +59,17 @@ class EventController extends Controller
             'date_start' => $data['dateStart'],
             'date_end' => $data['dateEnd']
         ]);
+
+        if (isSet($data['tags'])) {
+            $tags = $data['tags'];
+
+            foreach ($tags as $tag) {
+                $eventsTags = EventTag::create([
+                    'event_id' => $event->id,
+                    'tag_id' => $tag
+                ]);
+            }
+        }
 
 
         return redirect()->route('eventCreated', ['event' => $event]);

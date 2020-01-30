@@ -4,7 +4,7 @@
 <div class="container">
     <h1>View All Events</h1>
 
-    @each('events\partials\eventPreivew', $events, 'event')
+    @each('events\partials\eventPreview', $events, 'event')
 
 </div>
 

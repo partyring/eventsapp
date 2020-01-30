@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
+use App\Tag;
+use App\EventTag;
 
 class Event extends Model
 {
@@ -20,6 +22,12 @@ class Event extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Tag')->using('App\EventTag');
     }
 
 
