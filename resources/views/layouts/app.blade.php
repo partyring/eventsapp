@@ -36,6 +36,7 @@
                         @if(Auth::id())
                             <a href="{{ route('allEvents') }}"><li>All Events</li></a>
                             <a href="{{ route('viewMyEvents', ['user' => Auth::user()]) }}"><li>My Events</li></a>
+                            <a href="{{ route('showFriends', ['user' => Auth::user()]) }}"><li>My Friends</li></a>
                         @endif
                     </ul>
 

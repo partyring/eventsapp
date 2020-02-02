@@ -61,10 +61,17 @@ class EventController extends Controller
         $dateStart = $data['dateStart'];
         $timeStart = $data['timeStart'];
 
+        $private = 1;        
+
+        if ($data['privacyType'] == "public") {
+            $private = 0;
+        }
+
         $event = Event::create([
             'name' => $data['eventName'],
             'user_id' => Auth::id(),
             'description' => $data['description'],
+            'private' => $private,
             'date_start' => $data['dateStart'],
             'date_end' => $data['dateEnd']
         ]);

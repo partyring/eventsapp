@@ -37,6 +37,25 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <div class="col-md-6">
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="privacyType" id="publicEvent" value="public" checked>
+                                    <label class="form-check-label" for="publicEvent">
+                                    Public Event
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="privacyType" id="privateEvent" value="private">
+                                    <label class="form-check-label" for="privateEvent">
+                                    Private Event
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
 
                         <div class="form-group row">
                             <label for="dateStart" class="col-md-4 col-form-label text-md-right">{{ __('Date Start') }}</label>

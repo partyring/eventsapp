@@ -17,6 +17,7 @@ class CreateTableInvitedUsers extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('event_id');
+            $table->boolean('attending');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
