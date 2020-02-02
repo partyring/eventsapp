@@ -45,6 +45,16 @@ class User extends Authenticatable
     }
 
 
+    public function canViewEvent(Event $event) 
+    {
+        if ($event->private == 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+
     /**
      * In the future this can be expanded to include admins
      * 

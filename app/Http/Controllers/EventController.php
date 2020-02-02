@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Event;
 use App\Tag;
 use App\EventTag;
+use App\User;
 
 class EventController extends Controller
 {
@@ -33,17 +34,25 @@ class EventController extends Controller
         return view('events/create', ['tags' => $tags]);
     }
 
+
     public function view(Event $event)
     {
-        return view('events/view', ['event' => $event]);
+        if ($event->canBeViewedBy(Auth::user())) {
+            return view('events/view', ['event' => $event]);
+        }
+        
+
+        return dd('403');
     }
 
+    
     public function viewAll()
     {
-        $events = Event::all();
+        $events = Event::viewableBy(Auth::user())->get();
 
         return view('events/viewAll', ['events' => $events]);
     }
+
 
     public function create(Request $request)
     {
@@ -52,10 +61,17 @@ class EventController extends Controller
         $dateStart = $data['dateStart'];
         $timeStart = $data['timeStart'];
 
+        $private = 1;        
+
+        if ($data['privacyType'] == "public") {
+            $private = 0;
+        }
+
         $event = Event::create([
             'name' => $data['eventName'],
             'user_id' => Auth::id(),
             'description' => $data['description'],
+            'private' => $private,
             'date_start' => $data['dateStart'],
             'date_end' => $data['dateEnd']
         ]);
@@ -85,6 +101,8 @@ class EventController extends Controller
 
     public function edit(Event $event)
     {
+        $this->checkPermissionToEdit(Auth::user(), $event);
+
         $tags = Tag::all();
         $tagIDs = $event->tagIDs()->toArray();
 
@@ -95,9 +113,7 @@ class EventController extends Controller
 
     public function update(Request $request, Event $event)
     {
-        if (!Auth::user()->canEditEvent($event)) {
-            dd('403');
-        }
+        $this->checkPermissionToEdit(Auth::user(), $event);
 
         $data = $request->all();
 
@@ -122,9 +138,15 @@ class EventController extends Controller
 
         $event->tags()->sync($newTags);
         
- 
-
         return redirect()->route('viewEvent', ['event' => $event, 'message' => 'Event updated.']);
+    }
+
+
+    private function checkPermissionToEdit(User $user, Event $event)
+    {
+        if (!$user->canEditEvent($event)) {
+            dd('403');
+        }
     }
 
     

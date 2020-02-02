@@ -31,3 +31,5 @@ Route::post('events/{event}/edit', 'EventController@update')->name('updateEvent'
 Route::get('user/{user}', 'UserController@show')->name('showUser');
 Route::get('user/{user}/events', 'UserController@myEvents')->name('viewMyEvents');
 
+Route::get('friends', 'FriendsController@show')->name('showFriends');
+

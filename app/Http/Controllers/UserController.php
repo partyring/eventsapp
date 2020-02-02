@@ -21,7 +21,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        $events = Event::createdByUser(Auth::user())->get();
+        $events = Event::createdBy(Auth::user())->get();
 
         return view('user/myEvents', ['events' => $events]);
     }
