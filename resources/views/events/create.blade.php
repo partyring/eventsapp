@@ -28,7 +28,7 @@
                             <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
 
                             <div class="col-md-6">
-                                <textarea id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description') }}" required autofocus></textarea>
+                                <textarea id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="" required autofocus>{{ old('description') }}</textarea>
                                 @error('description')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="privacyType" id="privateEvent" value="private">
-                                    <label class="form-check-label" for="privateEvent">
+                                    <label class="form-check-label" for="exampleRadios2">
                                     Private Event
                                     </label>
                                 </div>
@@ -128,6 +128,14 @@
                                     
                                 @endforeach
                             
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
+
+                                <input type="file" name="coverImage" class="form-control">
+            
                             </div>
                         </div>
 

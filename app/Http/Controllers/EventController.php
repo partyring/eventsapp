@@ -56,7 +56,16 @@ class EventController extends Controller
 
     public function create(Request $request)
     {
-        $data = $request->all();   
+        $data = $request->all();  
+        
+        // todo :: add max filesize
+        $request->validate([
+
+            'file' => 'required|mimes:png,jpg,jpeg',
+
+        ]);
+
+        dd('hello');
 
         $dateStart = $data['dateStart'];
         $timeStart = $data['timeStart'];
@@ -86,6 +95,9 @@ class EventController extends Controller
                 ]);
             }
         }
+
+        // Upload image to directory matching event id
+        $path = $request->file('coverImage')->store('event_' . $event->id);
 
 
         return redirect()->route('eventCreated', ['event' => $event]);
