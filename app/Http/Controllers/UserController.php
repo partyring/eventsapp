@@ -17,6 +17,7 @@ class UserController extends Controller
     }
 
 
+    // TODO :: move to events controller
     public function myEvents()
     {
         $user = Auth::user();

@@ -4,29 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Facades\Validator;
 use Auth;
 use Carbon\Carbon;
 use App\Event;
 use App\Tag;
 use App\EventTag;
 use App\User;
+use App\Http\Requests\StoreEventRequest;
+
 
 class EventController extends Controller
 {
-
-    // /**
-    //  * Get a validator for an incoming registration request.
-    //  *
-    //  * @param  array  $data
-    //  * @return \Illuminate\Contracts\Validation\Validator
-    //  */
-    // protected function validator(array $data)
-    // {
-    //     return Validator::make($data, [
-    //         'name' => ['required', 'string', 'max:255'],
-    //         'description' => ['required', 'string', 'max:255']
-    //     ]);
-    // }
 
     public function index() 
     {
@@ -46,29 +35,37 @@ class EventController extends Controller
     }
 
     
-    public function viewAll()
+    public function viewAll(Request $request)
     {
-        $events = Event::viewableBy(Auth::user())->get();
+        if (isSet($_GET['past'])) {
+            $past = $_GET['past'];
+        } else {
+            $past = 0;
+        }
 
-        return view('events/viewAll', ['events' => $events]);
+        $events = Event::viewableBy(Auth::user());
+
+        if ($past) {
+            $events = $events->pastEventsOnly()
+                ->orderBy('date_start', 'desc');
+        } else {
+            $events = $events->futureEventsOnly()
+                ->orderBy('date_start', 'asc');
+        }
+
+        $events = $events->paginate(10);
+                    
+
+        return view('events/viewAll', ['events' => $events, 'past' => $past]);
     }
 
 
-    public function create(Request $request)
+    public function create(StoreEventRequest $request)
     {
-        $data = $request->all();  
-        
-        // todo :: add max filesize
-        $request->validate([
+        $data = $request->validated();   
 
-            'file' => 'required|mimes:png,jpg,jpeg',
-
-        ]);
-
-        dd('hello');
-
-        $dateStart = $data['dateStart'];
-        $timeStart = $data['timeStart'];
+        // $dateStart = $data['dateStart'];
+        // $timeStart = $data['timeStart'];
 
         $private = 1;        
 
@@ -127,10 +124,11 @@ class EventController extends Controller
     {
         $this->checkPermissionToEdit(Auth::user(), $event);
 
+        // $data = $request->validated();
         $data = $request->all();
 
-        $dateStart = $data['dateStart'];
-        $timeStart = $data['timeStart'];
+        // $dateStart = $data['dateStart'];
+        // $timeStart = $data['timeStart'];
 
 
         $event->name = $data['eventName'];

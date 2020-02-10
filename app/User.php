@@ -61,8 +61,7 @@ class User extends Authenticatable
      */
     public function canEditEvent(Event $event)
     {
-        if (Auth::id() == $event->user_id)
-        {
+        if (Auth::id() == $event->user_id && $event->isInFuture()) {
             return true;
         }
 

@@ -14,7 +14,7 @@
                             <label for="eventName" class="col-md-4 col-form-label text-md-right">{{ __('Event Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="eventName" type="text" class="form-control @error('eventName') is-invalid @enderror" name="eventName" value="{{ old('eventName') }}" required autofocus>
+                                <input id="eventName" type="text" class="form-control @error('eventName') is-invalid @enderror" name="eventName" value="{{ old('eventName') }}"  autofocus>
 
                                 @error('eventName')
                                     <span class="invalid-feedback" role="alert">
@@ -61,9 +61,9 @@
                             <label for="dateStart" class="col-md-4 col-form-label text-md-right">{{ __('Date Start') }}</label>
 
                             <div class="col-md-6">
-                                <input id="dateStart" type="date" class="form-control @error('dateStart') is-invalid @enderror" name="dateStart" value="{{ old('dateStart') }}" required autofocus>
+                                <input id="dateStart" type="date" class="form-control @error('dateStart') is-invalid @enderror" name="dateStart" value="{{ old('dateStart') }}"  autofocus>
 
-                                @error('eventName')
+                                @error('dateStart')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -75,7 +75,7 @@
                             <label for="timeStart" class="col-md-4 col-form-label text-md-right">{{ __('Time Start') }}</label>
 
                             <div class="col-md-6">
-                                <input id="timeStart" type="text" class="form-control @error('timeStart') is-invalid @enderror" name="timeStart" value="{{ old('timeStart') }}" required autofocus>
+                                <input id="timeStart" type="text" class="form-control @error('timeStart') is-invalid @enderror" name="timeStart" value="{{ old('timeStart') }}"  autofocus>
 
                                 @error('timeStart')
                                     <span class="invalid-feedback" role="alert">
@@ -89,7 +89,7 @@
                             <label for="dateEnd" class="col-md-4 col-form-label text-md-right">{{ __('Date End') }}</label>
 
                             <div class="col-md-6">
-                                <input id="dateEnd" type="date" class="form-control @error('dateEnd') is-invalid @enderror" name="dateEnd" value="{{ old('dateEnd') }}" required autofocus>
+                                <input id="dateEnd" type="date" class="form-control @error('dateEnd') is-invalid @enderror" name="dateEnd" value="{{ old('dateEnd') }}"  autofocus>
 
                                 @error('dateEnd')
                                     <span class="invalid-feedback" role="alert">
@@ -103,7 +103,7 @@
                             <label for="timeEnd" class="col-md-4 col-form-label text-md-right">{{ __('Time End') }}</label>
 
                             <div class="col-md-6">
-                                <input id="timeEnd" type="text" class="form-control @error('timeEnd') is-invalid @enderror" name="timeEnd" value="{{ old('timeEnd') }}" required autofocus>
+                                <input id="timeEnd" type="text" class="form-control @error('timeEnd') is-invalid @enderror" name="timeEnd" value="{{ old('timeEnd') }}"  autofocus>
 
                                 @error('timeEnd')
                                     <span class="invalid-feedback" role="alert">
