@@ -33,3 +33,7 @@ Route::get('user/{user}/events', 'UserController@myEvents')->name('viewMyEvents'
 
 Route::get('friends', 'FriendsController@show')->name('showFriends');
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
