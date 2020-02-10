@@ -7,6 +7,7 @@ use App\User;
 use App\Tag;
 use App\EventTag;
 use App\InvitedUser;
+use Carbon\Carbon;
 
 class Event extends Model
 {
@@ -50,9 +51,15 @@ class Event extends Model
     }
 
 
-    public function futureEvents()
+    public function scopeFutureEventsOnly($query)
     {
-        return Event::where('date_start', '>', Carbon::now());
+        return $query->where('date_start', '>', Carbon::now());
+    }
+
+
+    public function scopePastEventsOnly($query)
+    {
+        return $query->where('date_start', '<=', Carbon::now());
     }
 
 
@@ -109,6 +116,26 @@ class Event extends Model
 
 
         return false;
+    }
+
+
+    public function isInFuture()
+    {
+        if ($this->date_start > Carbon::now())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Human readable formatted date for start of event
+     */
+    public function dateStartFriendly()
+    {
+        return Carbon::parse($this->date_start)->format('d-m-Y');
     }
 
 
