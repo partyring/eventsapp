@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 use App\Tag;
+use App\Image;
 use App\EventTag;
 use App\InvitedUser;
 use Carbon\Carbon;
@@ -36,6 +37,15 @@ class Event extends Model
     public function invitedUsers()
     {
         return $this->belongsToMany('App\User', 'invited_users');
+    }
+
+
+    /**
+     * Get the event's image.
+     */
+    public function image()
+    {
+        return $this->morphOne('App\Image', 'imageable');
     }
 
 

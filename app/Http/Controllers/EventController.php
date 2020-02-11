@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\StoreEventRequest;
 use Auth;
 use Carbon\Carbon;
 use App\Event;
 use App\Tag;
 use App\EventTag;
 use App\User;
-use App\Http\Requests\StoreEventRequest;
+use App\Image;
 
 
 class EventController extends Controller
@@ -62,7 +63,7 @@ class EventController extends Controller
 
     public function create(StoreEventRequest $request)
     {
-        $data = $request->validated();   
+        $data = $request->validated();  
 
         // $dateStart = $data['dateStart'];
         // $timeStart = $data['timeStart'];
@@ -94,7 +95,13 @@ class EventController extends Controller
         }
 
         // Upload image to directory matching event id
-        $path = $request->file('coverImage')->store('event_' . $event->id);
+        $path = $data['coverImage']->store('event_' . $event->id);
+
+
+        $image = new Image;
+        $image->location = $path;
+
+        $event->image()->save($image);
 
 
         return redirect()->route('eventCreated', ['event' => $event]);

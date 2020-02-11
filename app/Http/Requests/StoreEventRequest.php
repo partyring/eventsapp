@@ -36,7 +36,8 @@ class StoreEventRequest extends FormRequest
             'dateStart' => 'required|after_or_equal:' . Carbon::now(),
             'dateEnd' => 'required|after_or_equal:dateStart',
             'privacyType' => 'required',
-            'tags' => 'sometimes'
+            'tags' => 'sometimes',
+            'coverImage' => 'required',
         ];
     }
 
@@ -51,6 +52,7 @@ class StoreEventRequest extends FormRequest
             'eventName.required' => 'Please give your event a name.',
             'description.required'  => 'Please give your event a description, so that attendees can understand what it is about.',
             'dateStart.after_or_equal' => 'Please pick a date in the future, or today\'s date.',
+            'coverImage.required' => 'Please upload a cover image. This can be a PNG or JPG file.'
         ];
     }
 }

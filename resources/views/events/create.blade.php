@@ -7,7 +7,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('postEvent') }}">
+                    <form method="POST" enctype="multipart/form-data" action="{{ route('postEvent') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -28,7 +28,7 @@
                             <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
 
                             <div class="col-md-6">
-                                <textarea id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="" required autofocus>{{ old('description') }}</textarea>
+                                <textarea id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="" autofocus>{{ old('description') }}</textarea>
                                 @error('description')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -122,7 +122,7 @@
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="tags[]" value="{{$tag->id}}" id="tags">
                                         <label class="form-check-label" for="tags">
-                                        #{{ $tag->name }}
+                                            #{{ $tag->name }}
                                         </label>
                                     </div>
                                     
@@ -134,7 +134,13 @@
                         <div class="form-group row">
                             <div class="col-md-6">
 
-                                <input type="file" name="coverImage" class="form-control">
+                                <input type="file" class="form-control @error('coverImage') is-invalid @enderror" id="coverImage" name="coverImage" class="form-control">
+
+                                @error('coverImage')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
             
                             </div>
                         </div>
