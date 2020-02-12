@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreEventRequest;
+use Storage;
 use Auth;
 use Carbon\Carbon;
 use App\Event;
@@ -28,7 +29,17 @@ class EventController extends Controller
     public function view(Event $event)
     {
         if ($event->canBeViewedBy(Auth::user())) {
-            return view('events/view', ['event' => $event]);
+
+            if ($event->image()->first()) {
+                $imageLocation = $event->image()->first()->location;
+            } else {
+                // If the image cannot be displayed, show a generic image.
+                $imageLocation = 'generic/generic1.jpg';
+            }
+
+            $imageURL = Storage::url($imageLocation);
+
+            return view('events/view', ['event' => $event, 'imageURL' => $imageURL]);
         }
         
 
@@ -95,7 +106,9 @@ class EventController extends Controller
         }
 
         // Upload image to directory matching event id
-        $path = $data['coverImage']->store('event_' . $event->id);
+        // TODO : Figure out privacy of public/private events and their images
+        $path = $data['coverImage']
+            ->store('event_' . $event->id, ['disk' => 'public']);
 
 
         $image = new Image;
