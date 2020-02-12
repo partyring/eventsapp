@@ -9,6 +9,7 @@ use App\Image;
 use App\EventTag;
 use App\InvitedUser;
 use Carbon\Carbon;
+use Storage;
 
 class Event extends Model
 {
@@ -148,5 +149,23 @@ class Event extends Model
         return Carbon::parse($this->date_start)->format('d-m-Y');
     }
 
+
+    /**
+     * Retrieve the location for the event image as found in storage.
+     * Used for display in Blade files.
+     * 
+     * TODO: remove generic image and think of a better idea
+     */
+    public function mainImageURL()
+    {
+        if ($this->image()->first()) {
+            $imageLocation = $this->image()->first()->location;
+        } else {
+            // If the image cannot be displayed, show a generic image.
+            $imageLocation = 'generic/generic1.jpg';
+        }
+
+       return Storage::url($imageLocation);
+    }
 
 }

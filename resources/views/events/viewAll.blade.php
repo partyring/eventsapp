@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>All Future Events</h1>
+    <h1 class="title--events" >All Future Events</h1>
 
     @if($past)
         <a href="{{route('allEvents')}}">Show future events.</a>
@@ -12,7 +12,11 @@
 
     <a href="{{route('createEvent')}}">Create a new event</a>
 
-    @each('events\partials\eventPreview', $events, 'event')
+    <div class="card-columns cards-events">
+
+        @each('events\partials\eventPreview', $events, 'event')
+
+    </div>
 
     {{ $events->appends(['past' => $past])->links() }}
 

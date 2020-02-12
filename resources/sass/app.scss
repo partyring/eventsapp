@@ -6,3 +6,123 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// fonts
+$mainFont: 'Quantico', sans-serif;
+$secondaryFont: 'Source Sans Pro', sans-serif;
+
+// colours
+$white: #ffffff;
+$black: #000000;
+
+// generic
+
+h1, h2 {
+    font-family: $mainFont;
+}
+
+p {
+    font-family: $secondaryFont;
+}
+
+// hashtags
+
+.tags {
+    display: block;
+    padding-bottom: 1.5rem;
+}
+
+.hashtag {
+    background-color: $white;
+    font-family: $mainFont;
+    padding: 1rem;
+    margin-right: 1rem;
+}
+
+// navbar
+
+.navbar-brand {
+    font-family: $mainFont;
+}
+
+.nav-item {
+    padding-left: 1rem;
+    font-family: $mainFont;
+}
+
+// generic image
+
+.image-full-width {
+    background-size: cover;
+    width: 100%;
+    height: 50rem;
+}
+
+// index specific
+
+.image-full-width--index {
+    background-image: url(https://cdn.pixabay.com/photo/2018/05/10/11/34/concert-3387324_1280.jpg);
+}
+
+.text--welcome-back {
+    text-align: center;
+    padding-top: 20%;
+    font-size: 4rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    color: $white;
+
+    @include media-breakpoint-up(md) {
+        color: $black;
+    }
+}
+
+// View all events
+
+.title--events {
+    padding-top: 2rem;
+}
+
+.cards-events {
+    padding-top: 2rem;
+}
+
+.card--event-preview {
+    padding: 1rem;
+}
+
+.image--preview {
+    padding-bottom: 1rem;
+}
+
+// View event
+
+.event-image--full {
+    width: 100%;
+    padding-bottom: 1.5rem;
+    @include media-breakpoint-up(lg) { 
+        width: 50rem;
+        padding-bottom: 2rem;
+    }
+}
+
+.event-details {
+    @include media-breakpoint-up(lg) {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+
+    @include media-breakpoint-up(xl) {
+        padding-left: 10rem;
+        padding-right: 10rem;
+    }
+  
+}
+
+.event-title {
+    word-wrap: break-word;  
+}
+
+.event-edit {
+    display: block;
+}

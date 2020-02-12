@@ -2,9 +2,15 @@
 
 @section('content')
 <div class="container">
-    <h1>Your Events</h1>
+    <h1 class="title--events">Your Events</h1>
 
-    @each('events\partials\eventPreview', $events, 'event')
+    <!-- TODO : Include dropdown of - future/past, events created by me,
+        events attended by me -->
+
+    
+    <div class="card-columns cards-events">
+        @each('events\partials\eventPreview', $events, 'event')
+    </div>
 
 </div>
 
