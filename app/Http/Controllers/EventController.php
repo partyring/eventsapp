@@ -27,8 +27,11 @@ class EventController extends Controller
     }
 
 
-    public function view(Event $event)
+    public function view(Request $request, Event $event)
     {
+        // reflash any messages from potential redirects
+        $request->session()->reflash();
+
         if ($event->canBeViewedBy(Auth::user())) {
 
             $imageURL = $event->mainImageURL();
@@ -39,13 +42,15 @@ class EventController extends Controller
                 $userIsCreator = false;
             }
 
+            $session = $request->session()->all();
+
             return view('events/view', [
                 'event' => $event, 
                 'imageURL' => $imageURL, 
-                'userIsCreator' => $userIsCreator
+                'userIsCreator' => $userIsCreator,
+                'session' => $session
             ]);
-        }
-        
+        }        
 
         return dd('403');
     }

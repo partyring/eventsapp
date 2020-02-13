@@ -3,9 +3,21 @@
 @section('content')
 <div class="container">
 
+    
     <a href={{route('allEvents')}}>Back to all events</a>
-</div>
-<div class="container">
+    
+    @isSet($session['error'])
+        <div class="alert alert-danger" role="alert">
+            {{ $session['error'] }}
+        </div>
+    @endiSset
+
+    @isSet($session['message'])
+    <div class="alert alert-primary" role="alert">
+        {{ $session['message'] }}
+    </div>
+    @endisSet
+
     <div class="text-center">
         <img src="{{ $imageURL }}" class="event-image--full">
     </div>
@@ -21,6 +33,24 @@
             @endforeach
         </div>
 
+        <p>Number of people attending: {{ $event->numberOfAttendees() }}</p>
+
+        @if(Auth::user()->isAttendingEvent($event))
+            <p>You are attending this event!</p>
+            <form action="{{ route('updateAttend', ['event' => $event, 'user' => Auth::user()]) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-primary">Can't attend</button>
+            </form>
+            @if(Auth::user()->canRemoveAttendance($event))
+            @endif
+        @else
+            <form action="{{ route('attendEvent', ['event' => $event, 'user' => Auth::user()]) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-primary">Attend this event</button>
+            </form>
+            
+        @endif
+
         @if(Auth::user()->canEditEvent($event))
 
             <a href={{route('editEvent', ['event' => $event])}} class="event-edit">Edit</a>
@@ -28,6 +58,5 @@
 
     </div>
 </div>
-
 
 @endsection

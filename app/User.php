@@ -47,11 +47,28 @@ class User extends Authenticatable
 
     public function canViewEvent(Event $event) 
     {
+        // if the user is the author
+        if ($event->user_id == $this->id) {
+            return true;
+        }
+        
+        // if event is public
         if ($event->private == 0) {
             return true;
         }
 
+        // if user is invited
+        // if ($this->isInvitedTo($event)) {
+        //     return true;
+        // }
+
         return false;
+    }
+
+
+    public function isInvitedTo(Event $event)
+    {
+        //
     }
 
 
@@ -66,5 +83,40 @@ class User extends Authenticatable
         }
 
         return false;
+    }
+
+
+    public function isAttendingEvent(Event $event)
+    {
+        $attending = Attendee::where('user_id', $this->id)
+            ->where('event_id', $event->id)
+            ->first();
+
+        if ($attending) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public function hasPermissionToAttend(Event $event)
+    {
+        if ($this->canViewEvent($event)) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public function canRemoveAttendance(Event $event) 
+    {
+        // You must attend your own event
+        if ($event->user_id == $this->id) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -27,6 +27,8 @@ Route::get('/events', 'EventController@viewAll')->name('allEvents');
 Route::get('events/{event}', 'EventController@view')->name('viewEvent');
 Route::get('events/{event}/edit', 'EventController@edit')->name('editEvent');
 Route::post('events/{event}/edit', 'EventController@update')->name('updateEvent');
+Route::post('events/{event}/{user}/attend', 'AttendeeController@create')->name('attendEvent');
+Route::post('events/{event}/{user}/change-attend', 'AttendeeController@update')->name('updateAttend');
 
 Route::get('user/{user}', 'UserController@show')->name('showUser');
 Route::get('user/{user}/events', 'UserController@myEvents')->name('viewMyEvents');

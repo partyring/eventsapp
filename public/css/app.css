@@ -11430,10 +11430,13 @@ p {
 .event-image--full {
   width: 100%;
   padding-bottom: 1.5rem;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 @media (min-width: 992px) {
   .event-image--full {
+    height: 30rem;
     width: 50rem;
     padding-bottom: 2rem;
   }

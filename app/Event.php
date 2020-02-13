@@ -41,6 +41,12 @@ class Event extends Model
     }
 
 
+    public function attendees()
+    {
+        return $this->hasMany('App\Attendee');
+    }
+
+
     /**
      * Get the event's image.
      */
@@ -166,6 +172,12 @@ class Event extends Model
         }
 
        return Storage::url($imageLocation);
+    }
+
+
+    public function numberOfAttendees()
+    {
+        return $this->attendees()->count();
     }
 
 }
