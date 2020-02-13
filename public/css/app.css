@@ -11356,3 +11356,108 @@ a.text-dark:focus {
   }
 }
 
+h1,
+h2 {
+  font-family: "Quantico", sans-serif;
+}
+
+p {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.tags {
+  display: block;
+  padding-bottom: 1.5rem;
+}
+
+.hashtag {
+  background-color: #ffffff;
+  font-family: "Quantico", sans-serif;
+  padding: 1rem;
+  margin-right: 1rem;
+}
+
+.navbar-brand {
+  font-family: "Quantico", sans-serif;
+}
+
+.nav-item {
+  padding-left: 1rem;
+  font-family: "Quantico", sans-serif;
+}
+
+.image-full-width {
+  background-size: cover;
+  width: 100%;
+  height: 50rem;
+}
+
+.image-full-width--index {
+  background-image: url(https://cdn.pixabay.com/photo/2018/05/10/11/34/concert-3387324_1280.jpg);
+}
+
+.text--welcome-back {
+  text-align: center;
+  padding-top: 20%;
+  font-size: 4rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .text--welcome-back {
+    color: #000000;
+  }
+}
+
+.title--events {
+  padding-top: 2rem;
+}
+
+.cards-events {
+  padding-top: 2rem;
+}
+
+.card--event-preview {
+  padding: 1rem;
+}
+
+.image--preview {
+  padding-bottom: 1rem;
+}
+
+.event-image--full {
+  width: 100%;
+  padding-bottom: 1.5rem;
+}
+
+@media (min-width: 992px) {
+  .event-image--full {
+    width: 50rem;
+    padding-bottom: 2rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .event-details {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .event-details {
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+}
+
+.event-title {
+  word-wrap: break-word;
+}
+
+.event-edit {
+  display: block;
+}
+

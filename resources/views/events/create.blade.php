@@ -38,6 +38,8 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="privacyType" class="col-md-4 col-form-label text-md-right">{{ __('Event Privacy') }}</label>
+
                             <div class="col-md-6">
 
                                 <div class="form-check">
@@ -132,8 +134,10 @@
                         </div>
 
                         <div class="form-group row">
-                            <div class="col-md-6">
+                            
+                            <label for="coverImage" class="col-md-4 col-form-label text-md-right">{{ __('Upload Cover Image') }}</label>
 
+                            <div class="col-md-6">
                                 <input type="file" class="form-control @error('coverImage') is-invalid @enderror" id="coverImage" name="coverImage" class="form-control">
 
                                 @error('coverImage')

@@ -31,16 +31,19 @@ class EventController extends Controller
     {
         if ($event->canBeViewedBy(Auth::user())) {
 
-            if ($event->image()->first()) {
-                $imageLocation = $event->image()->first()->location;
+            $imageURL = $event->mainImageURL();
+
+            if ($event->createdBy(Auth::user())) {
+                $userIsCreator = true;
             } else {
-                // If the image cannot be displayed, show a generic image.
-                $imageLocation = 'generic/generic1.jpg';
+                $userIsCreator = false;
             }
 
-            $imageURL = Storage::url($imageLocation);
-
-            return view('events/view', ['event' => $event, 'imageURL' => $imageURL]);
+            return view('events/view', [
+                'event' => $event, 
+                'imageURL' => $imageURL, 
+                'userIsCreator' => $userIsCreator
+            ]);
         }
         
 
