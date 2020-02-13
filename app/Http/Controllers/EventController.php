@@ -14,6 +14,7 @@ use App\Tag;
 use App\EventTag;
 use App\User;
 use App\Image;
+use App\Attendee;
 
 
 class EventController extends Controller
@@ -110,11 +111,16 @@ class EventController extends Controller
         $path = $data['coverImage']
             ->store('event_' . $event->id, ['disk' => 'public']);
 
-
         $image = new Image;
         $image->location = $path;
 
         $event->image()->save($image);
+
+        // Make creator attend event
+        $attendee = Attendee::create([
+            'user_id' => Auth::id(),
+            'event_id' => $event->id,
+        ]);
 
 
         return redirect()->route('eventCreated', ['event' => $event]);
