@@ -58,9 +58,9 @@ class User extends Authenticatable
         }
 
         // if user is invited
-        // if ($this->isInvitedTo($event)) {
-        //     return true;
-        // }
+        if ($this->isInvitedTo($event)) {
+            return true;
+        }
 
         return false;
     }
@@ -68,7 +68,15 @@ class User extends Authenticatable
 
     public function isInvitedTo(Event $event)
     {
-        //
+        $invite = Invitation::where('event_id', $event->id)
+            ->where('user_id', $this->id)
+            ->first();
+
+        if ($invite) {
+            return true;
+        }
+
+        return false;
     }
 
 
