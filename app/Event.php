@@ -35,9 +35,9 @@ class Event extends Model
     }
 
 
-    public function invitedUsers()
+    public function invitations()
     {
-        return $this->belongsToMany('App\User', 'invited_users');
+        return $this->belongsToMany('App\User', 'invitations');
     }
 
 
@@ -104,13 +104,23 @@ class Event extends Model
 
         $id = $user->id;
 
-        return $query->with('invitedUsers')
+        return $query->with('invitations')
             ->where('user_id', $id)
             ->orWhere('private', 0)
-            ->orWhereHas('invitedUsers', function ($q) use ($id) {
+            ->orWhereHas('invitations', function ($q) use ($id) {
                 $q->where('user_id', $id);
             });
 
+    }
+
+
+    public function wasCreatedBy(User $user)
+    {
+        if ($this->user_id == $user->id) {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -125,7 +135,7 @@ class Event extends Model
             return true;
         }
 
-        $invitedUsers = $this->invitedUsers()->pluck('user_id')->toArray();
+        $invitedUsers = $this->invitations()->pluck('user_id')->toArray();
 
         if (in_array($user->id, $invitedUsers)) {
             return true;

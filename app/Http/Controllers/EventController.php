@@ -36,7 +36,7 @@ class EventController extends Controller
 
             $imageURL = $event->mainImageURL();
 
-            if ($event->createdBy(Auth::user())) {
+            if ($event->wasCreatedBy(Auth::user())) {
                 $userIsCreator = true;
             } else {
                 $userIsCreator = false;
