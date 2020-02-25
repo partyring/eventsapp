@@ -6,18 +6,7 @@
     
     <a href={{route('allEvents')}}>Back to all events</a>
     
-    @isSet($session['error'])
-        <div class="alert alert-danger" role="alert">
-            {{ $session['error'] }}
-        </div>
-    @endiSset
-
-    <!-- TODO : this currently isn't working, will need bugfixing -->
-    @isSet($session['message'])
-    <div class="alert alert-primary" role="alert">
-        {{ $session['message'] }}
-    </div>
-    @endisSet
+    @include('layouts.partials.messages', ['session' => $session])
 
     <div class="text-center">
         <img src="{{ $imageURL }}" class="event-image--full">
