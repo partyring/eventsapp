@@ -12,6 +12,7 @@
         </div>
     @endiSset
 
+    <!-- TODO : this currently isn't working, will need bugfixing -->
     @isSet($session['message'])
     <div class="alert alert-primary" role="alert">
         {{ $session['message'] }}

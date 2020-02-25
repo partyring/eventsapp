@@ -125,13 +125,24 @@ class EventController extends Controller
         $event->image()->save($image);
 
         // Make creator attend event
-        $attendee = Attendee::create([
-            'user_id' => Auth::id(),
-            'event_id' => $event->id,
-        ]);
+        $this->createAttendanceFor(Auth::user(), $event);
 
 
         return redirect()->route('eventCreated', ['event' => $event]);
+    }
+
+
+    /**
+     * TODO: this really belongs in a helper class and is not
+     * directly relevant to this controller as it needs to be
+     * used by the attendee controller and the potential seeder
+     */
+    private function createAttendanceFor(User $user, Event $event)
+    {
+        return Attendee::create([
+            'user_id' => $user->id,
+            'event_id' => $event->id,
+        ]);
     }
 
 
