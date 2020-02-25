@@ -7,4 +7,8 @@
     <a href="{{route('viewEvent', ['event' => $event])}}">View your event here.</a>
 </div>
 
+<div class="container">
+    <a href="{{route('inviteUsers', ['event' => $event])}}">Invite users to your event.</a>
+</div>
+
 @endsection

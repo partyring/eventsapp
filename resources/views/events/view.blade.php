@@ -25,7 +25,12 @@
 
         <p>Number of people attending: {{ $event->numberOfAttendees() }}</p>
 
-        @if(Auth::user()->isAttendingEvent($event))
+        @if($userIsCreator)
+
+            <a href="{{route('inviteUsers', ['event' => $event])}}">Invite users to your event.</a>
+
+
+        @elseif(Auth::user()->isAttendingEvent($event))
             <p>You are attending this event!</p>
             <form action="{{ route('updateAttend', ['event' => $event, 'user' => Auth::user()]) }}" method="POST">
                 @csrf
