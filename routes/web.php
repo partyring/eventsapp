@@ -28,6 +28,8 @@ Route::get('/created/{event}', 'EventController@created')->name('eventCreated');
 Route::get('/events', 'EventController@viewAll')->name('allEvents');
 Route::get('events/{event}', 'EventController@view')->name('viewEvent');
 
+Route::get('{user}/attending', 'EventController@attending')->name('viewAttending');
+
 // Update events
 Route::get('events/{event}/edit', 'EventController@edit')->name('editEvent');
 Route::post('events/{event}/edit', 'EventController@update')->name('updateEvent');

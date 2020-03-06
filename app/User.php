@@ -45,6 +45,12 @@ class User extends Authenticatable
     }
 
 
+    public function attendances()
+    {
+        return $this->hasMany('App\Attendee');
+    }
+
+
     public function canViewEvent(Event $event) 
     {
         // if the user is the author

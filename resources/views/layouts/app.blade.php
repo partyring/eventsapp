@@ -38,7 +38,8 @@
                     <ul class="navbar-nav mr-auto">
                         @if(Auth::id())
                             <a href="{{ route('allEvents') }}"><li class="nav-item">All Events</li></a>
-                            <a href="{{ route('viewMyEvents', ['user' => Auth::user()]) }}"><li class="nav-item">My Events</li></a>
+                            <a href="{{ route('viewMyEvents', ['user' => Auth::user()]) }}"><li class="nav-item">I'm Hosting</li></a>
+                            <a href="{{ route('viewAttending', ['user' => Auth::user()]) }}"><li class="nav-item">I'm Attending</li></a>
                             <a href="{{ route('createEvent') }}"><li class="nav-item">Create New Event</li></a>
                             <a href="{{ route('showFriends', ['user' => Auth::user()]) }}"><li class="nav-item">My Friends</li></a>
                         @endif

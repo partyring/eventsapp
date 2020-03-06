@@ -205,5 +205,13 @@ class EventController extends Controller
     }
 
     
+    /**
+     * This sits in the Events controller as invited events as well as
+     * attending events are both served in this view.
+     */
+    public function attending(User $user)
+    {
+        dd($user->attendances()->get());
+    }
 
 }
