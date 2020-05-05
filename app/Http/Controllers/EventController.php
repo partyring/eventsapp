@@ -20,7 +20,7 @@ use App\Attendee;
 class EventController extends Controller
 {
 
-    public function index() 
+    public function startCreation() 
     {
         $tags = Tag::orderBy('name')->get();
         return view('events/create', ['tags' => $tags]);
@@ -56,7 +56,7 @@ class EventController extends Controller
     }
 
     
-    public function viewAll(Request $request)
+    public function index(Request $request)
     {
         if (isSet($_GET['past'])) {
             $past = $_GET['past'];
@@ -64,7 +64,13 @@ class EventController extends Controller
             $past = 0;
         }
 
-        $events = Event::viewableBy(Auth::user());
+        $user = Auth::user();
+
+        $events = Event::viewableBy($user);
+
+        // todo: show invitations
+        
+        $pendingInvitations = $user->pendingInvitations()->count();
 
         if ($past) {
             $events = $events->pastEventsOnly()
@@ -77,7 +83,11 @@ class EventController extends Controller
         $events = $events->paginate(10);
                     
 
-        return view('events/viewAll', ['events' => $events, 'past' => $past]);
+        return view('events/viewAll', [
+            'events' => $events, 
+            'past' => $past,
+            'pendingInvitations' => $pendingInvitations
+        ]);
     }
 
 
@@ -206,12 +216,21 @@ class EventController extends Controller
 
     
     /**
-     * This sits in the Events controller as invited events as well as
-     * attending events are both served in this view.
+     * This currently sits in EventController (rather than AttendeeController)
+     * because it shows a combination of both 'invited' events and 'attending'
+     * events.
      */
     public function attending(User $user)
     {
-        dd($user->attendances()->get());
+        // dd($_GET['invitedOnly']);
+        $attendanceEventIDs = $user->attendances()->pluck('event_id');
+        $invitationEventIDs = $user->invitations()->pluck('event_id');
+
+        $eventsAttending = Event::whereIn('id', $attendanceEventIDs)->get();
+        $eventsInvitedTo = Event::whereIn('id', $invitationEventIDs)->get();
+
+        return view('user/attendingEvents', ['eventsAttending' => $eventsAttending, 'eventsInvitedTo' => $eventsInvitedTo]);
     }
+
 
 }

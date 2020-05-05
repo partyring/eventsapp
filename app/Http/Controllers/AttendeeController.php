@@ -11,6 +11,7 @@ class AttendeeController extends Controller
 {
     public function create(Request $request, Event $event, User $user)
     {
+
         if (!$user->hasPermissionToAttend($event)) {
             dd('403');
         }
@@ -20,6 +21,14 @@ class AttendeeController extends Controller
             ->first();
         
         if (!$attendee) {
+
+            // check to see if there are any invitations pending
+            $invitation = $user->getInviteFor($event);
+            if ($invitation) {
+                $invitation->accepted = true;
+                $invitation->save();
+            }
+
             Attendee::create([
                 'user_id' => $user->id,
                 'event_id' => $event->id
@@ -47,6 +56,13 @@ class AttendeeController extends Controller
 
             if ($attendee) {
                 $attendee->delete();
+
+                // reverse invitation acceptance
+                $invitation = $user->getInviteFor($event);
+                if ($invitation) {
+                    $invitation->accepted = false;
+                    $invitation->save();
+                }
             }
 
             $request->session()->flash('success', 'You are no longer attending this event.');

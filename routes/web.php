@@ -20,13 +20,14 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Event creation
-Route::get('/events/create', 'EventController@index')->name('createEvent');
+Route::get('/events/create', 'EventController@startCreation')->name('createEvent');
 Route::post('/events/create', 'EventController@create')->name('postEvent');
 Route::get('/created/{event}', 'EventController@created')->name('eventCreated');
 
 // View events
-Route::get('/events', 'EventController@viewAll')->name('allEvents');
+Route::get('/events', 'EventController@index')->name('allEvents');
 Route::get('events/{event}', 'EventController@view')->name('viewEvent');
+Route::get('user/{user}/event-invitations', 'UserController@viewEventInvitations')->name('viewEventInvitations');
 
 Route::get('{user}/attending', 'EventController@attending')->name('viewAttending');
 

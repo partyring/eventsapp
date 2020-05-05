@@ -26,4 +26,16 @@ class UserController extends Controller
 
         return view('user/myEvents', ['events' => $events]);
     }
+
+    
+    public function viewEventInvitations(User $user)
+    {
+        $pendingInvitations = $user->pendingInvitations()->pluck('event_id');
+
+        $events = Event::whereIn('id', $pendingInvitations)->get();
+        $pendingInvitations = $events->count();
+
+        return view ('events/invitedEvents', ['events' => $events, 'pendingInvitations' => $pendingInvitations]);
+    }
+
 }

@@ -51,6 +51,19 @@ class User extends Authenticatable
     }
 
 
+    public function invitations()
+    {
+        return $this->hasMany('App\Invitation');
+    }
+
+    
+    public function pendingInvitations()
+    {
+        return $this->invitations()
+            ->where('accepted', 0);
+    }
+
+
     public function canViewEvent(Event $event) 
     {
         // if the user is the author
@@ -74,15 +87,21 @@ class User extends Authenticatable
 
     public function isInvitedTo(Event $event)
     {
-        $invite = Invitation::where('event_id', $event->id)
-            ->where('user_id', $this->id)
-            ->first();
+        $invite = $this->getInviteFor($event);
 
         if ($invite) {
             return true;
         }
 
         return false;
+    }
+
+
+    public function getInviteFor(Event $event)
+    {
+        return Invitation::where('event_id', $event->id)
+            ->where('user_id', $this->id)
+            ->first();
     }
 
 
