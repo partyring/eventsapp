@@ -17,7 +17,7 @@
 
     <p>
         You currently have {{ $pendingInvitations }} event {{ Str::plural('invitation', $pendingInvitations) }} - 
-        <a href="{{route('viewEventInvitations', ['user' => Auth::user()])}}">check them out</a>.
+        <a href="{{ route('viewEventInvitations', ['user' => Auth::user()]) }}">check them out</a>.
     </p>
 
     <div class="card-columns cards-events">
