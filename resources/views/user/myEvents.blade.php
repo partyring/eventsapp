@@ -6,7 +6,6 @@
 
     <!-- TODO : Include dropdown of - future/past, events created by me,
         events attended by me -->
-
     
     <div class="card-columns cards-events">
         @each('events\partials\eventPreview', $events, 'event')

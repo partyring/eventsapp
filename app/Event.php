@@ -23,24 +23,37 @@ class Event extends Model
     ];
 
 
+    /**
+     * An event belongs to a user
+     */
     public function user()
     {
         return $this->belongsTo('App\User');
     }
 
 
+    /**
+     * An event has many tags
+     */
     public function tags()
     {
-        return $this->belongsToMany('App\Tag')->using('App\EventTag')->orderBy('name');
+        return $this->belongsToMany('App\Tag')
+            ->using('App\EventTag')
+            ->orderBy('name');
     }
 
-
+    /**
+     * An event has many invitations
+     */
     public function invitations()
     {
         return $this->belongsToMany('App\User', 'invitations');
     }
 
 
+    /**
+     * An event has many attendees
+     */
     public function attendees()
     {
         return $this->hasMany('App\Attendee');
@@ -56,48 +69,48 @@ class Event extends Model
     }
 
 
+    /**
+     * Get event tag IDs
+     */
     public function tagIDs()
     {
         return $this->tags()->pluck('tag_id');
     }
 
 
-    public function pastEvents()
-    {
-        return Event::where('date_start', '<', Carbon::now());
-    }
-
-
+    /**
+     * Get only future events
+     */
     public function scopeFutureEventsOnly($query)
     {
         return $query->where('date_start', '>', Carbon::now());
     }
 
 
+    /**
+     * Get only past events
+     */
     public function scopePastEventsOnly($query)
     {
         return $query->where('date_start', '<=', Carbon::now());
     }
 
 
-    public function ongoingEvents()
-    {
-        $now = Carbon::now();
-
-        return Event::where('date_start', '<', $now)
-            ->where('date_end', '>', $now);
-    }
-
-
+    /**
+     * Get events created by a user
+     */
     public function scopeCreatedBy($query, User $user)
     {
         return $query->where('user_id', $user->id);
     }
 
 
+    /**
+     * Events visible to a user
+     */
     public function scopeViewableBy($query, User $user) 
     {
-        // We only want events that are either
+        // We only want events that are
         // 1. Created by the Auth user
         // 2. The Auth user is invited to
         // 3. The event is public
@@ -110,11 +123,25 @@ class Event extends Model
             ->orWhereHas('invitations', function ($q) use ($id) {
                 $q->where('user_id', $id);
             });
-
     }
 
 
-    public function wasCreatedBy(User $user)
+    /**
+     * Events which are happening now
+     */
+    public function ongoingEvents()
+    {
+        $now = Carbon::now();
+
+        return Event::where('date_start', '<', $now)
+            ->where('date_end', '>', $now);
+    }
+
+
+    /**
+     * Check if event was created by the given user
+     */
+    public function wasCreatedBy(User $user): bool
     {
         if ($this->user_id == $user->id) {
             return true;
@@ -124,29 +151,40 @@ class Event extends Model
     }
 
 
+    /**
+     * If an event can be viewed by a user
+     * 
+     * @param User $user
+     */
     public function canBeViewedBy(User $user)
     {
-        if ($this->private == 0) {
+        if (!$this->private) {
+
             return true;
         }
 
-
         if ($this->user_id == $user->id) {
+
             return true;
         }
 
         $invitedUsers = $this->invitations()->pluck('user_id')->toArray();
 
         if (in_array($user->id, $invitedUsers)) {
+
             return true;
         }
-
 
         return false;
     }
 
 
-    public function isInFuture()
+    /**
+     * Reusable function to check if event is in the future
+     * 
+     * @return bool
+     */
+    public function isInFuture(): bool
     {
         if ($this->date_start > Carbon::now())
         {
@@ -159,8 +197,10 @@ class Event extends Model
 
     /**
      * Human readable formatted date for start of event
+     * 
+     * @return string
      */
-    public function dateStartFriendly()
+    public function dateStartFriendly(): string
     {
         return Carbon::parse($this->date_start)->format('d-m-Y');
     }
@@ -171,6 +211,9 @@ class Event extends Model
      * Used for display in Blade files.
      * 
      * TODO: remove generic image and think of a better idea
+     * 
+     * TODO: the relationship here is totally weird and this is excess code
+     * fix that!
      */
     public function mainImageURL()
     {
@@ -185,9 +228,13 @@ class Event extends Model
     }
 
 
-    public function numberOfAttendees()
+    /**
+     * Get the number of attending users
+     * 
+     * @return int
+     */
+    public function numberOfAttendees(): int
     {
         return $this->attendees()->count();
     }
-
 }

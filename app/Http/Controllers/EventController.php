@@ -19,43 +19,65 @@ use App\Attendee;
 
 class EventController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Event Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller is responsible for handling events.
+    |
+    */
 
-    public function startCreation() 
+    /**
+     * Page for creating event
+     */
+    public function create() 
     {
         $tags = Tag::orderBy('name')->get();
+
         return view('events/create', ['tags' => $tags]);
     }
 
 
+    /**
+     * Page for viewing a created event
+     * 
+     * @param Request $request
+     * @param Event $event
+     */
     public function view(Request $request, Event $event)
     {
-        // reflash any messages from potential redirects
+        // Reflash any messages from potential redirects
         $request->session()->reflash();
 
-        if ($event->canBeViewedBy(Auth::user())) {
+        if (!$event->canBeViewedBy(Auth::user())) {#
+            abort(403);
+        }
 
-            $imageURL = $event->mainImageURL();
+        $imageURL = $event->mainImageURL();
 
-            if ($event->wasCreatedBy(Auth::user())) {
-                $userIsCreator = true;
-            } else {
-                $userIsCreator = false;
-            }
+        if ($event->wasCreatedBy(Auth::user())) {
+            $userIsCreator = true;
+        } else {
+            $userIsCreator = false;
+        }
 
-            $session = $request->session()->all();
+        $session = $request->session()->all();
 
-            return view('events/view', [
-                'event' => $event, 
-                'imageURL' => $imageURL, 
-                'userIsCreator' => $userIsCreator,
-                'session' => $session
-            ]);
-        }        
-
-        return dd('403');
+        return view('events/view', [
+            'event' => $event, 
+            'imageURL' => $imageURL, 
+            'userIsCreator' => $userIsCreator,
+            'session' => $session
+        ]);
     }
 
     
+    /**
+     * Show all events
+     * 
+     * @param Request $request
+     */
     public function index(Request $request)
     {
         if (isSet($_GET['past'])) {
@@ -81,7 +103,6 @@ class EventController extends Controller
         }
 
         $events = $events->paginate(10);
-                    
 
         return view('events/viewAll', [
             'events' => $events, 
@@ -91,7 +112,12 @@ class EventController extends Controller
     }
 
 
-    public function create(StoreEventRequest $request)
+    /**
+     * Save an event in the db
+     * 
+     * @param StoreEventRequest $request
+     */
+    public function store(StoreEventRequest $request)
     {
         $data = $request->validated();  
 
@@ -137,15 +163,17 @@ class EventController extends Controller
         // Make creator attend event
         $this->createAttendanceFor(Auth::user(), $event);
 
-
         return redirect()->route('eventCreated', ['event' => $event]);
     }
 
 
     /**
-     * TODO: this really belongs in a helper class and is not
+     * TODO: this really belongs in a different class and is not
      * directly relevant to this controller as it needs to be
      * used by the attendee controller and the potential seeder
+     * 
+     * @param User $user
+     * @param Event $event
      */
     private function createAttendanceFor(User $user, Event $event)
     {
@@ -156,13 +184,22 @@ class EventController extends Controller
     }
 
 
+    /**
+     * Success page on creation
+     * 
+     * @param Event $event
+     */
     public function created(Event $event)
     {
         return view('events/created', ['event' => $event]);
     }
 
 
-
+    /**
+     * Edit an event
+     * 
+     * @param Event $event
+     */
     public function edit(Event $event)
     {
         $this->checkPermissionToEdit(Auth::user(), $event);
@@ -170,14 +207,23 @@ class EventController extends Controller
         $tags = Tag::all();
         $tagIDs = $event->tagIDs()->toArray();
 
-        return view('events/edit', ['event' => $event, 'tags' => $tags, 'tagIDs' => $tagIDs]);
-    
+        return view('events/edit', 
+            ['event' => $event, 'tags' => $tags, 'tagIDs' => $tagIDs]
+        );
     }
 
 
+    /**
+     * Update an event
+     * 
+     * @param Request $request
+     * @param Event $event
+     */
     public function update(Request $request, Event $event)
     {
         $this->checkPermissionToEdit(Auth::user(), $event);
+
+        // TODO: make a custom form request for editing or update creation one
 
         // $data = $request->validated();
         $data = $request->all();
@@ -203,14 +249,23 @@ class EventController extends Controller
 
         $event->tags()->sync($newTags);
         
-        return redirect()->route('viewEvent', ['event' => $event, 'message' => 'Event updated.']);
+        return redirect()->route('viewEvent', 
+            ['event' => $event, 'message' => 'Event updated.']
+        );
     }
 
 
+    /**
+     * TODO - this can probably be relocated to some middleware?
+     * Check if user has permission to edit.
+     * 
+     * @param User $user
+     * @param Event $event
+     */
     private function checkPermissionToEdit(User $user, Event $event)
     {
         if (!$user->canEditEvent($event)) {
-            dd('403');
+            abort(403);
         }
     }
 
@@ -219,6 +274,8 @@ class EventController extends Controller
      * This currently sits in EventController (rather than AttendeeController)
      * because it shows a combination of both 'invited' events and 'attending'
      * events.
+     * 
+     * @param User $user
      */
     public function attending(User $user)
     {
@@ -229,8 +286,8 @@ class EventController extends Controller
         $eventsAttending = Event::whereIn('id', $attendanceEventIDs)->get();
         $eventsInvitedTo = Event::whereIn('id', $invitationEventIDs)->get();
 
-        return view('user/attendingEvents', ['eventsAttending' => $eventsAttending, 'eventsInvitedTo' => $eventsInvitedTo]);
+        return view('user/attendingEvents', 
+            ['eventsAttending' => $eventsAttending, 'eventsInvitedTo' => $eventsInvitedTo]
+        );
     }
-
-
 }

@@ -20,8 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Event creation
-Route::get('/events/create', 'EventController@startCreation')->name('createEvent');
-Route::post('/events/create', 'EventController@create')->name('postEvent');
+Route::get('/events/create', 'EventController@create')->name('createEvent');
+Route::post('/events/create', 'EventController@store')->name('postEvent');
 Route::get('/created/{event}', 'EventController@created')->name('eventCreated');
 
 // View events
@@ -40,8 +40,8 @@ Route::post('events/{event}/{user}/attend', 'AttendeeController@create')->name('
 Route::post('events/{event}/{user}/change-attend', 'AttendeeController@update')->name('updateAttend');
 
 // Invitations
-Route::get('events/{event}/invite-users', 'InvitationController@index')->name('inviteUsers');
-Route::post('events/{event}/invite-users/{username}', 'InvitationController@create')->name('sendInvitation');
+Route::get('events/{event}/invite-users', 'InvitationController@create')->name('inviteUsers');
+Route::post('events/{event}/invite-users/{username}', 'InvitationController@store')->name('sendInvitation');
 
 // User profile
 Route::get('user/{user}', 'UserController@show')->name('showUser');

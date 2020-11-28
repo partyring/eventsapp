@@ -28,7 +28,7 @@ class StoreEventRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return  [
             'eventName' => 'required|string|max:255|min:3',
@@ -46,7 +46,7 @@ class StoreEventRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'eventName.required' => 'Please give your event a name.',

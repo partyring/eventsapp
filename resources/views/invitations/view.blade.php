@@ -21,15 +21,15 @@
     </div>
 
     <p>You can invite anybody by searching their username in the search field below.</p>
-
+    {{-- TODO: this needs to use ajax --}}
     <form method="GET" action="{{ route('inviteUsers', ['event' => $event]) }}">
         <div class="form-group row">
             <label for="username" class="col-form-label text-md-right">{{ __('Username') }}</label>
 
             <div class="col-md-6">
-                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}"  autofocus>
+                <input id="username" type="text" class="form-control @error ('username') is-invalid @enderror" name="username" value="{{ old('username') }}"  autofocus>
 
-                @error('eventName')
+                @error ('eventName')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -46,7 +46,8 @@
             @foreach($users as $user)
                 <form method="POST" action="{{ route('sendInvitation', ['event' => $event, 'username' => $user->username]) }}">
                     @csrf
-                    <span>Photo placeholder</span>{{ $user->username }} <button type="submit">Invite</button>
+                    <span>[Photo placeholder]</span>{{ $user->username }} 
+                    <button type="submit">Invite</button>
                 </form>
             @endforeach
         </div>

@@ -1,11 +1,11 @@
 <div class="card card--event-preview">
-    @isSet($invited)
-        @if($invited)
+    @isSet ($invited)
+        @if ($invited)
             <span class="badge--invited">You've been invited</span>
         @endif
     @endisSet
-    @isSet($attending)
-        @if($attending)
+    @isSet ($attending)
+        @if ($attending)
             <span class="badge--attending">You're attending</span>
         @endif
     @endisSet

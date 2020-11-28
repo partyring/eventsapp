@@ -10,9 +10,25 @@ use App\Attendee;
 
 class InvitationController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Invitation Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller is responsible for handling invitations to events.
+    |
+    */
 
-    public function index(Request $request, Event $event)
+    /**
+     * Create a new invitation for a given event
+     * 
+     * @param Request $request
+     * @param Event $event
+     */
+    public function create(Request $request, Event $event)
     {
+        // TODO: searching for users needs to be abstracted to a new function
+        // and called by ajax
         $session = $request->session()->all();
 
         $username = (isSet($request->all()['username']) ? $request->all()['username'] : null);
@@ -43,18 +59,18 @@ class InvitationController extends Controller
 
     /**
      * Send the invitation for a user for an event.
-     * This uses the username rather than the user ID to avoid link spamming.
-     * Although this is protected by the CSRF token, I believe it is best to
-     * not allow a user to manually just use the ID (e.g. 1, 2, 3) to invite users as it
-     * would be very easy to spam this. In the future I think that IDs should be
-     * changed so it is not 1, 2, 3 but a GUID.
+     * 
+     * @param Request $request
+     * @param Event $event
+     * @param string $username
      */
-    public function create(Request $request, Event $event, $username)
+    public function store(Request $request, Event $event, string $username)
     {
         $user = User::where('username', $username)->first();
 
         if (!$user) {
             $request->session()->flash('error', 'The invited user does not exist.');
+
             return redirect()->route('inviteUsers', ['event' => $event]);
         } 
 
@@ -66,10 +82,10 @@ class InvitationController extends Controller
             ->where('event_id', $event->id)
             ->first();
         
-        if ($invitation) {
-            $request->session()->flash('error', $user->username . ' is already invited.');
-        } elseif ($attendee) {
+        if ($attendee) {
             $request->session()->flash('error', $user->username . ' is already attending.');
+        } elseif ($invitation) {
+            $request->session()->flash('error', $user->username . ' is already invited.');
         } else {
 
             Invitation::create([
@@ -78,10 +94,9 @@ class InvitationController extends Controller
             ]);
 
             $request->session()->flash('message', 'Invited ' . $user->username . '.');
-
         }
-        
-        return redirect()->route('inviteUsers', ['event' => $event]);
+
         // todo: dispatch email on queue
+        return redirect()->route('inviteUsers', ['event' => $event]);
     }
 }

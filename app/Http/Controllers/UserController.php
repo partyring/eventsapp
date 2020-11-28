@@ -9,6 +9,20 @@ use App\Event;
 
 class UserController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | User Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller is responsible for handling users.
+    |
+    */
+
+    /**
+     * TODO: Show user profile
+     * 
+     * @param User $user
+     */
     public function show(User $user)
     {
         $user = User::where('id', $user->id);
@@ -27,7 +41,7 @@ class UserController extends Controller
         return view('user/myEvents', ['events' => $events]);
     }
 
-    
+    // TODO: move to invitations controller
     public function viewEventInvitations(User $user)
     {
         $pendingInvitations = $user->pendingInvitations()->pluck('event_id');

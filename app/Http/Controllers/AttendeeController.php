@@ -4,25 +4,41 @@ namespace App\Http\Controllers;
 use App\Attendee;
 use App\Event;
 use App\User;
-
 use Illuminate\Http\Request;
-
 class AttendeeController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Attendee Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller is responsible for handling the attendance of users to
+    | an event 
+    |
+    */
+
+    /**
+     * Create new attendence
+     * 
+     * @param Request $request
+     * @param Event $event
+     * @param User $user
+     */
     public function create(Request $request, Event $event, User $user)
     {
-
         if (!$user->hasPermissionToAttend($event)) {
-            dd('403');
+            // TODO: move permissions checks to middleware
+            abort(403);
         }
 
+        // check to see if the user is already attending the event
         $attendee = Attendee::where('user_id', $user->id)
             ->where('event_id', $event->id)
             ->first();
         
         if (!$attendee) {
-
             // check to see if there are any invitations pending
+            // if so, count this as invitation aecpted
             $invitation = $user->getInviteFor($event);
             if ($invitation) {
                 $invitation->accepted = true;
@@ -42,8 +58,15 @@ class AttendeeController extends Controller
 
         return redirect()->route('viewEvent', ['event' => $event]);
     }
+    
 
-
+    /**
+     * Update a user's attendance
+     * 
+     * @param Request $request
+     * @param Event $event
+     * @param User $user
+     */
     public function update(Request $request, Event $event, User $user)
     {
         if (!$user->canRemoveAttendance($event)) {

@@ -25,7 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $events = Event::where('user_id', Auth::id());
+        // $events = Event::where('user_id', Auth::id());
 
         return view('home');
     }

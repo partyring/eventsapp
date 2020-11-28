@@ -19,13 +19,18 @@ class EventTag extends Pivot
     ];
 
 
-
+    /**
+     * Event Tag belongs to an event
+     */
     public function event()
     {
         return $this->belongsTo('App\Event');
     }
 
 
+    /**
+     * Event tag belongs to a tag
+     */
     public function tag()
     {
         return $this->belongsTo('App\Tag');

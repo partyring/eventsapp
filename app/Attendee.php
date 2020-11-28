@@ -17,16 +17,20 @@ class Attendee extends Model
         'event_id', 'user_id',
     ];
 
-
+    /**
+     * Attendance belongs to a user
+     */
     public function user()
     {
         return $this->belongsTo('App\User');
     }
 
 
+    /**
+     * Attendance belongs to an event
+     */
     public function event()
     {
         return $this->belongsTo('App\Event');
     }
-    
 }
