@@ -11,6 +11,8 @@
 |
 */
 
+/** TODO:: group routes */
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,33 +22,36 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Event creation
-Route::get('/events/create', 'EventController@create')->name('createEvent');
-Route::post('/events/create', 'EventController@store')->name('postEvent');
-Route::get('/created/{event}', 'EventController@created')->name('eventCreated');
-
-// View events
-Route::get('/events', 'EventController@index')->name('allEvents');
-Route::get('events/{event}', 'EventController@view')->name('viewEvent');
-Route::get('user/{user}/event-invitations', 'UserController@viewEventInvitations')->name('viewEventInvitations');
-
-Route::get('{user}/attending', 'EventController@attending')->name('viewAttending');
+Route::get('/events/create', 'EventController@create')->name('event.create');
+Route::post('/events/create', 'EventController@store')->name('event.store');
+Route::get('/events/{event}/created', 'EventController@created')->name('event.created');
 
 // Update events
-Route::get('events/{event}/edit', 'EventController@edit')->name('editEvent');
-Route::post('events/{event}/edit', 'EventController@update')->name('updateEvent');
+Route::get('events/{event}/edit', 'EventController@edit')->name('event.edit');
+Route::post('events/{event}/edit', 'EventController@update')->name('event.update');
 
-// Attend events
-Route::post('events/{event}/{user}/attend', 'AttendeeController@create')->name('attendEvent');
-Route::post('events/{event}/{user}/change-attend', 'AttendeeController@update')->name('updateAttend');
+// View events
+Route::get('/events', 'EventController@index')->name('event.index');
+Route::get('events/{event}', 'EventController@view')->name('event.view');
 
 // Invitations
-Route::get('events/{event}/invite-users', 'InvitationController@create')->name('inviteUsers');
-Route::post('events/{event}/invite-users/{username}', 'InvitationController@store')->name('sendInvitation');
+Route::get('invitations/user/{user}', 'InvitationController@index')->name('invitation.index');
+
+// Attendances
+Route::get('user/{user}/attending', 'EventController@attending')->name('event.view-attending');
+
+// Attend events
+Route::post('events/{event}/{user}/attend', 'AttendeeController@create')->name('attendee.create');
+Route::post('events/{event}/{user}/change-attend', 'AttendeeController@update')->name('attendee.update');
+
+// Invitations
+Route::get('events/{event}/invite-users', 'InvitationController@create')->name('invitation.create');
+Route::post('events/{event}/invite-users/{username}', 'InvitationController@store')->name('invitation.store');
 
 // User profile
-Route::get('user/{user}', 'UserController@show')->name('showUser');
-Route::get('user/{user}/events', 'UserController@myEvents')->name('viewMyEvents');
+Route::get('user/{user}', 'UserController@show')->name('user.show');
+Route::get('user/{user}/events', 'UserController@myEvents')->name('user.events');
 
 // Friendship
-Route::get('friends', 'FriendsController@show')->name('showFriends');
+Route::get('friends', 'FriendsController@show')->name('friends.show');
 

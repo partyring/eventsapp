@@ -33,8 +33,10 @@ class StoreEventRequest extends FormRequest
         return  [
             'eventName' => 'required|string|max:255|min:3',
             'description' => 'required|string|max:1000|min:10',
-            'dateStart' => 'required|after_or_equal:' . Carbon::now(),
-            'dateEnd' => 'required|after_or_equal:dateStart',
+            'dateStart' => 'required|date|after_or_equal:' . Carbon::now(),
+            // 'timeStart' => 'required|date|date_format:H:i',
+            'dateEnd' => 'required|date|after_or_equal:dateStart',
+            // 'timeEnd' => 'required|date|date_format:H:i',
             'privacyType' => 'required',
             'tags' => 'sometimes',
             'coverImage' => 'required',

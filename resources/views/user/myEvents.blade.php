@@ -8,7 +8,7 @@
         events attended by me -->
     
     <div class="card-columns cards-events">
-        @each('events\partials\eventPreview', $events, 'event')
+        @each('events\partials\_event-preview', $events, 'event')
     </div>
 
 </div>

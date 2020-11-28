@@ -163,7 +163,7 @@ class EventController extends Controller
         // Make creator attend event
         $this->createAttendanceFor(Auth::user(), $event);
 
-        return redirect()->route('eventCreated', ['event' => $event]);
+        return redirect()->route('event.created', ['event' => $event]);
     }
 
 
@@ -249,7 +249,7 @@ class EventController extends Controller
 
         $event->tags()->sync($newTags);
         
-        return redirect()->route('viewEvent', 
+        return redirect()->route('event.view', 
             ['event' => $event, 'message' => 'Event updated.']
         );
     }

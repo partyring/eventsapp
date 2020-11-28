@@ -1,16 +1,14 @@
 <div class="card card--event-preview">
-    @isSet ($invited)
-        @if ($invited)
-            <span class="badge--invited">You've been invited</span>
-        @endif
+    @if (!empty($invited))    
+        <span class="badge--invited">You've been invited</span>
     @endisSet
-    @isSet ($attending)
-        @if ($attending)
-            <span class="badge--attending">You're attending</span>
-        @endif
-    @endisSet
+
+    @if (!empty($attending))
+        <span class="badge--attending">You're attending</span>
+    @endif
+
     <img class="card-img-top image--preview" src="{{ $event->mainImageURL() }}" alt="Card image cap">
-    <h2><a href="{{route('viewEvent', $event)}}">{{ $event->name }}</a></h2>
+    <h2><a href="{{route('event.view', $event)}}">{{ $event->name }}</a></h2>
     <p>{{ $event->description }}</p>
     <p>{{ $event->dateStartFriendly() }}</p>
     @php 

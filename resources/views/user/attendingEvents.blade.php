@@ -8,7 +8,7 @@
 
         <!-- Attending -->
         @foreach ($eventsAttending as $event)
-            @include('events\partials\eventPreview', ['event' => $event, 'attending' => true])
+            @include('events\partials\_event-preview', ['event' => $event, 'attending' => true])
         @endforeach
     </div>
     

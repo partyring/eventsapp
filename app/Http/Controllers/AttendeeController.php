@@ -56,7 +56,7 @@ class AttendeeController extends Controller
             $request->session()->flash('error', 'You are already attending this event!');
         }
 
-        return redirect()->route('viewEvent', ['event' => $event]);
+        return redirect()->route('event.view', ['event' => $event]);
     }
     
 
@@ -92,6 +92,6 @@ class AttendeeController extends Controller
 
         }
 
-        return redirect()->route('viewEvent', ['event' => $event]);
+        return redirect()->route('event.view', ['event' => $event]);
     }
 }

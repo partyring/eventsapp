@@ -37,11 +37,11 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         @if(Auth::id())
-                            <a href="{{ route('allEvents') }}"><li class="nav-item">All Events</li></a>
-                            <a href="{{ route('viewMyEvents', ['user' => Auth::user()]) }}"><li class="nav-item">I'm Hosting</li></a>
-                            <a href="{{ route('viewAttending', ['user' => Auth::user()]) }}"><li class="nav-item">I'm Attending</li></a>
-                            <a href="{{ route('createEvent') }}"><li class="nav-item">Create New Event</li></a>
-                            <a href="{{ route('showFriends', ['user' => Auth::user()]) }}"><li class="nav-item">My Friends</li></a>
+                            <a href="{{ route('event.index') }}"><li class="nav-item">All Events</li></a>
+                            <a href="{{ route('user.events', ['user' => Auth::user()]) }}"><li class="nav-item">I'm Hosting</li></a>
+                            <a href="{{ route('event.view-attending', ['user' => Auth::user()]) }}"><li class="nav-item">I'm Attending</li></a>
+                            <a href="{{ route('event.create') }}"><li class="nav-item">Create New Event</li></a>
+                            <a href="{{ route('friends.show', ['user' => Auth::user()]) }}"><li class="nav-item">My Friends</li></a>
                         @endif
                     </ul>
 
@@ -68,7 +68,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('viewEventInvitations', ['user' => Auth::user()]) }}">
+                                    <a class="dropdown-item" href="{{ route('invitation.index', ['user' => Auth::user()]) }}">
                                         {{ __('Your Event Invitations') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
@@ -89,7 +89,7 @@
             </div>
         </nav>
 
-        <main class="">
+        <main class="pt-3">
             @yield('content')
         </main>
     </div>

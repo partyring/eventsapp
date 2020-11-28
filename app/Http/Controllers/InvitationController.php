@@ -20,6 +20,23 @@ class InvitationController extends Controller
     */
 
     /**
+     * View invitations for a given user.
+     * This does not use Auth user as we know in the future admins
+     * will be able to view invitations for other users.
+     * 
+     * @param User $user
+     */
+    public function index(User $user)
+    {
+        $pendingInvitations = $user->pendingInvitations()->pluck('event_id');
+
+        $events = Event::whereIn('id', $pendingInvitations)->get();
+        $pendingInvitations = $events->count();
+
+        return view ('invitations/index', ['events' => $events, 'pendingInvitations' => $pendingInvitations]);
+    }
+
+    /**
      * Create a new invitation for a given event
      * 
      * @param Request $request
@@ -71,7 +88,7 @@ class InvitationController extends Controller
         if (!$user) {
             $request->session()->flash('error', 'The invited user does not exist.');
 
-            return redirect()->route('inviteUsers', ['event' => $event]);
+            return redirect()->route('invitation.create', ['event' => $event]);
         } 
 
         $invitation = Invitation::where('user_id', $user->id)
@@ -97,6 +114,6 @@ class InvitationController extends Controller
         }
 
         // todo: dispatch email on queue
-        return redirect()->route('inviteUsers', ['event' => $event]);
+        return redirect()->route('invitation.create', ['event' => $event]);
     }
 }

@@ -7,7 +7,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('updateEvent', ['event' => $event]) }}">
+                    <form method="POST" action="{{ route('event.update', ['event' => $event]) }}">
                         @csrf
 
                         <div class="form-group row">

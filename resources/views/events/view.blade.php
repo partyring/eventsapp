@@ -4,7 +4,7 @@
 <div class="container">
 
     
-    <a href={{route('allEvents')}}>Back to all events</a>
+    <a href={{route('event.index')}}>Back to all events</a>
     
     @include('layouts.partials.messages', ['session' => $session])
 
@@ -28,20 +28,20 @@
 
         @if($userIsCreator)
 
-            <a href="{{ route('inviteUsers', ['event' => $event]) }}">
+            <a href="{{ route('invitation.create', ['event' => $event]) }}">
                 Invite users to your event.
             </a>
 
         @elseif (Auth::user()->isAttendingEvent($event))
             <p>You are attending this event!</p>
-            <form action="{{ route('updateAttend', ['event' => $event, 'user' => Auth::user()]) }}" method="POST">
+            <form action="{{ route('attendee.update', ['event' => $event, 'user' => Auth::user()]) }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-primary">Can't attend</button>
             </form>
             {{-- @if(Auth::user()->canRemoveAttendance($event))
             @endif --}}
         @else
-            <form action="{{ route('attendEvent', ['event' => $event, 'user' => Auth::user()]) }}" method="POST">
+            <form action="{{ route('attendee.create', ['event' => $event, 'user' => Auth::user()]) }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-primary">Attend this event</button>
             </form>
@@ -49,7 +49,7 @@
         @endif
 
         @if (Auth::user()->canEditEvent($event))
-            <a href={{route('editEvent', ['event' => $event])}} class="event-edit">
+            <a href={{route('event.edit', ['event' => $event])}} class="event-edit">
                 Edit
             </a>
         @endif

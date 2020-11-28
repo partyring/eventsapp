@@ -217,8 +217,8 @@ class Event extends Model
      */
     public function mainImageURL()
     {
-        if ($this->image()->first()) {
-            $imageLocation = $this->image()->first()->location;
+        if ($this->image) {
+            $imageLocation = $this->image->location;
         } else {
             // If the image cannot be displayed, show a generic image.
             $imageLocation = 'generic/generic1.jpg';
